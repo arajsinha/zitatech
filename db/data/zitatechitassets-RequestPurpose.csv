@@ -1,0 +1,4 @@
+id;descr;name;
+npi;For Transferring product;Product Transition/NPI;
+lif;Need New Product;End of Purchase/Life;
+sub;Substitute product;Product Substitution;
