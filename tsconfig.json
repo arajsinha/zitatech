@@ -2,9 +2,9 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "outDir": "./gen/srv",
+        "outDir": "./gen/srv/srv",
         "rootDirs": [
-            "./gen/srv"
+            "./gen/srv/srv"
         ],
         "baseUrl": "./",
         "moduleResolution": "node",

@@ -8,9 +8,10 @@
   "dependencies": {
     "@sap-cloud-sdk/openapi-generator": "^3.12.0",
     "@sap/cds": "^7",
+    "@sap/cds-hana": "^2",
     "@sap/ux-specification": "^1.120.4",
     "express": "^4",
-    "@sap/cds-hana": "^2"
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
@@ -22,7 +23,8 @@
     "start": "cds-serve",
     "watch-itassetreqsub": "cds watch --open zitatech.itassetreqsub.itassetreqsub/index.html?sap-ui-xx-viewCache=false --livereload false",
     "undeploy": "cf undeploy zitatechitassets --delete-services --delete-service-keys --delete-service-brokers",
-    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive && npm run build:tsc",
+    "build:tsc": "tsc",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "workspaces": [
