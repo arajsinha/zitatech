@@ -6,22 +6,34 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@sap-cloud-sdk/openapi-generator": "^3.12.0",
     "@sap/cds": "^7",
     "@sap/ux-specification": "^1.120.4",
-    "express": "^4"
+    "express": "^4",
+    "@sap/cds-hana": "^2"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "cds-plugin-ui5": "^0.6.13"
+    "@sap/cds-dk": "^7",
+    "cds-plugin-ui5": "^0.6.13",
+    "rimraf": "^3.0.2"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-zitatech": "cds watch --open ns.zitatech/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-itassetreqsub": "cds watch --open zitatech.itassetreqsub.itassetreqsub/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy zitatechitassets --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/zitatech"
-  ]
+    "app/itassetreqsub"
+  ],
+  "cds": {
+    "requires": {
+      "db": "hana"
+    }
+  }
 }
