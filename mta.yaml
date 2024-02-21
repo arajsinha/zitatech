@@ -3,133 +3,132 @@ ID: zitatechitassets
 description: A simple CAP project.
 version: 1.0.0
 modules:
-  - name: zitatechitassets-srv
-    type: nodejs
-    path: gen/srv
-    requires:
-      - name: zitatechitassets-db
-      - name: uaa_zitatechitassets
-    provides:
-      - name: srv-api
-        properties:
-          srv-url: ${default-url}
+- name: zitatechitassets-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: zitatechitassets-db
+  - name: uaa_zitatechitassets
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+- name: zitatechitassets-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: zitatechitassets-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: zitatechitassets-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: zitatechitassets-destination-service
     parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm
-  - name: zitatechitassets-db-deployer
-    type: hdb
-    path: gen/db
-    requires:
-      - name: zitatechitassets-db
+      content-target: true
+  - name: zitatechitassets_html_repo_host
     parameters:
-      buildpack: nodejs_buildpack
-  - name: zitatechitassets-destination-content
-    type: com.sap.application.content
-    requires:
-      - name: zitatechitassets-destination-service
-        parameters:
-          content-target: true
-      - name: zitatechitassets_html_repo_host
-        parameters:
-          service-key:
-            name: zitatechitassets_html_repo_host-key
-      - name: uaa_zitatechitassets
-        parameters:
-          service-key:
-            name: uaa_zitatechitassets-key
+      service-key:
+        name: zitatechitassets_html_repo_host-key
+  - name: uaa_zitatechitassets
     parameters:
-      content:
+      service-key:
+        name: uaa_zitatechitassets-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: zitatech_itasset_zitatechitassets_html_repo_host
+          ServiceInstanceName: zitatechitassets-html5-app-host-service
+          ServiceKeyName: zitatechitassets_html_repo_host-key
+          sap.cloud.service: zitatech.itasset
+        - Authentication: OAuth2UserTokenExchange
+          Name: zitatech_itasset_uaa_zitatechitassets
+          ServiceInstanceName: zitatechitassets-xsuaa-service
+          ServiceKeyName: uaa_zitatechitassets-key
+          sap.cloud.service: zitatech.itasset
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: zitatechitassets-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: zitatechitassets_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - zitatechitassetreqsubitassetsub.zip
+      name: zitatechitassetreqsubitassetsub
+      target-path: resources/
+- name: zitatechitassetreqsubitassetsub
+  type: html5
+  path: app/itassetsub
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: zitatechitassets-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: zitatechitassets-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
         instance:
           destinations:
-            - Name: zitatech_itasset_zitatechitassets_html_repo_host
-              ServiceInstanceName: zitatechitassets-html5-app-host-service
-              ServiceKeyName: zitatechitassets_html_repo_host-key
-              sap.cloud.service: zitatech.itasset
-            - Authentication: OAuth2UserTokenExchange
-              Name: zitatech_itasset_uaa_zitatechitassets
-              ServiceInstanceName: zitatechitassets-xsuaa-service
-              ServiceKeyName: uaa_zitatechitassets-key
-              sap.cloud.service: zitatech.itasset
-          existing_destinations_policy: ignore
-    build-parameters:
-      no-source: true
-  - name: zitatechitassets-app-content
-    type: com.sap.application.content
-    path: .
-    requires:
-      - name: zitatechitassets_html_repo_host
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: resources
-      requires:
-        - artifacts:
-            - zitatechitassetreqsubitassetreqsub.zip
-          name: zitatechitassetreqsubitassetreqsub
-          target-path: resources/
-  - name: zitatechitassetreqsubitassetreqsub
-    type: html5
-    path: app/itassetreqsub
-    build-parameters:
-      build-result: dist
-      builder: custom
-      commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms:
-        []
-resources:
-  - name: zitatechitassets-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-  - name: zitatechitassets-destination-service
-    type: org.cloudfoundry.managed-service
-    parameters:
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            destinations:
-              - Authentication: NoAuthentication
-                Name: ui5
-                ProxyType: Internet
-                Type: HTTP
-                URL: https://ui5.sap.com
-              - Authentication: NoAuthentication
-                HTML5.DynamicDestination: true
-                HTML5.ForwardAuthToken: true
-                Name: zitatechitassets-srv-api
-                ProxyType: Internet
-                Type: HTTP
-                URL: ~{srv-api/srv-url}
-            existing_destinations_policy: update
-        version: 1.0.0
-      service: destination
-      service-name: zitatechitassets-destination-service
-      service-plan: lite
-    requires:
-      - name: srv-api
-  - name: zitatechitassets_html_repo_host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-name: zitatechitassets-html5-app-host-service
-      service-plan: app-host
-  - name: uaa_zitatechitassets
-    type: org.cloudfoundry.managed-service
-    parameters:
-      path: ./xs-security.json
-      service: xsuaa
-      service-name: zitatechitassets-xsuaa-service
-      service-plan: application
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: zitatechitassets-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: zitatechitassets-destination-service
+    service-plan: lite
+  requires:
+  - name: srv-api
+- name: zitatechitassets_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: zitatechitassets-html5-app-host-service
+    service-plan: app-host
+- name: uaa_zitatechitassets
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: zitatechitassets-xsuaa-service
+    service-plan: application
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npx cds build --production
+  - builder: custom
+    commands:
+    - npx cds build --production

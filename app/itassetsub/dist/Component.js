@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/core/AppComponent"],function(e){"use strict";return e.extend("zitatech.itassetreq.sub.itassetsub.Component",{metadata:{manifest:"json"}})});
+//# sourceMappingURL=Component.js.map

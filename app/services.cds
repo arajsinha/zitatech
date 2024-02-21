@@ -1,2 +1,2 @@
 
-using from './itassetreqsub/annotations';
+using from './itassetsub/annotations';

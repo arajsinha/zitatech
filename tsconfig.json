@@ -1,33 +1,18 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "outDir": "./gen/srv/srv",
-        "rootDirs": [
-            "./gen/srv/srv"
-        ],
-        "baseUrl": "./",
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        "preserveConstEnums": true,
-        "sourceMap": false,
-        "allowJs": true,
-        "strict": true,
-        "strictNullChecks": false,
-        "strictPropertyInitialization": false,
-        "lib": [
-            "ES2017",
-            "DOM"
-        ],
-        "esModuleInterop": true,
-        "types": [
-            "node"
-        ]
+      "target": "es2021",
+      "module": "commonjs",
+      "lib": ["esnext", "dom"],
+      "declaration": true,
+      "declarationMap": false,
+      "sourceMap": true,
+      "diagnostics": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "inlineSources": false,
+      "strict": true
     },
-    "include": [
-        "./srv/**/*"
-    ],
-    "exclude": [
-        "./@cds-models/**/*"
-    ]
-}
+    "include": ["**/*.ts"],
+    "exclude": ["dist/**/*", "test/**/*", "**/*.spec.ts", "node_modules/**/*"]
+  }
+  
