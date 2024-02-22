@@ -83,7 +83,6 @@
             "css": []
         },
         "routing": {
-            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
@@ -111,7 +110,8 @@
                                         "route": "HeaderObjectPage"
                                     }
                                 }
-                            }
+                            },
+                            "initialLoad": "Enabled"
                         }
                     }
                 },

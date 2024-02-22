@@ -1,34 +1,38 @@
 using ITAssetRequestFormService as service from '../../srv/service';
 
 annotate service.Header {
-    requestPurpose @Core.Immutable;
-    reqType        @Core.Immutable;
+    requestPurpose @Core.Immutable @title: 'Request Purpose'
 };
 
 annotate service.Header with @(UI.LineItem: [
     {
+        $Type : 'UI.DataField',
+        Value : objectId,
+        Label : 'Request Number',
+    },
+    {
         $Type: 'UI.DataField',
-        Label: 'date',
+        Label: 'Date',
         Value: date,
     },
     {
         $Type: 'UI.DataField',
-        Label: 'firstName',
+        Label: 'First Name',
         Value: firstName,
     },
     {
         $Type: 'UI.DataField',
-        Label: 'lastName',
+        Label: 'Last Name',
         Value: lastName,
     },
     {
         $Type: 'UI.DataField',
-        Label: 'mobileNumber',
-        Value: mobileNumber,
+        Label: 'Mobile Number',
+        Value: mobileNumberS,
     },
     {
         $Type: 'UI.DataField',
-        Label: 'emailId',
+        Label: 'Email ID',
         Value: emailId,
     },
 ]);
@@ -71,11 +75,6 @@ annotate service.Header with @(
                 $Type: 'UI.DataField',
                 Label: 'Location',
                 Value: location,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Reason for Product Change (Form Factor)',
-                Value: requestPurpose_id,
             },
             {
                 $Type: 'UI.DataField',
@@ -194,7 +193,7 @@ annotate service.AssetDetails with {
 
 annotate service.AssetCategory with {
     id @Common.Text: {
-        $value                : descr,
+        $value                : name,
         ![@UI.TextArrangement]: #TextOnly,
     }
 };
@@ -206,21 +205,7 @@ annotate service.OS with {
     }
 };
 
-annotate service.AssetDetails with {
-    manufacturer @(
-        Common.ValueList               : {
-            $Type         : 'Common.ValueListType',
-            CollectionPath: 'Manufacturer',
-            Parameters    : [{
-                $Type            : 'Common.ValueListParameterInOut',
-                LocalDataProperty: manufacturer_id,
-                ValueListProperty: 'id',
-            }, ],
-            Label         : 'Manufacturer',
-        },
-        Common.ValueListWithFixedValues: true
-    )
-};
+
 
 annotate service.Manufacturer with {
     id @Common.Text: {
@@ -278,3 +263,148 @@ annotate service.AssetDetails with {
         Common.ValueListWithFixedValues: true
     )
 };
+annotate service.Header with {
+    requestPurpose @Common.Text : {
+        $value : requestPurpose.name,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
+};
+annotate service.Header with {
+    reqType @Common.Text : {
+            $value : reqType.name,
+            ![@UI.TextArrangement] : #TextOnly,
+        }
+};
+annotate service.AssetDetails with {
+    assetCategory @Common.Text : {
+            $value : assetCategory.name,
+            ![@UI.TextArrangement] : #TextOnly,
+        }
+};
+annotate service.AssetDetails with {
+    manufacturer @Common.Text : {
+        $value : manufacturer.name,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
+};
+annotate service.AssetDetails with {
+    OS @Common.Text : {
+        $value : OS.name,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
+};
+annotate service.Header with @(
+    UI.HeaderInfo : {
+        Description : {
+            $Type : 'UI.DataField',
+            Value : requestPurpose_id,
+        },
+        TypeName : '',
+        TypeNamePlural : '',
+        Title : {
+            $Type : 'UI.DataField',
+            Value : objectId,
+        },
+    }
+);
+annotate service.Header with {
+    reqType @Common.ValueListWithFixedValues : true
+};
+annotate service.RequestType with {
+    id @Common.Text : {
+        $value : name,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
+};
+annotate service.Header with {
+    requestPurpose @Common.FieldControl : #Mandatory
+};
+annotate service.AssetDetails with {
+    manufacturer @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Manufacturer',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterIn',
+                    LocalDataProperty : manufacturer_id,
+                    ValueListProperty : 'id',
+                },
+                {
+                    $Type : 'Common.ValueListParameterOut',
+                    LocalDataProperty : manufacturer_id,
+                    ValueListProperty : 'id',
+                },
+                {
+                    $Type : 'Common.ValueListParameterFilterOnly',
+                    ValueListProperty : 'assetCategory_id',
+                },
+                {
+                    $Type : 'Common.ValueListParameterIn',
+                    LocalDataProperty : header.assetDetails.assetCategory_id,
+                    ValueListProperty : 'assetCategory_id',
+                }
+            ],
+            Label : 'Manufacturer',
+        },
+        Common.ValueListWithFixedValues : true
+)};
+
+// annotate service.Header @(
+//     Common.SideEffects #RefreshManufact:{
+//         SourceProperties :[ assetDetails.assetCategory_id ],
+//         TargetProperties: [ assetDetails.manufacturer_id ]
+//     }
+// );
+
+
+annotate service.Header with {
+    mobileNumber @Common.Text: {
+        $value: mobileNumberS,
+        ![@UI.TextArrangement] : #TextOnly
+    }
+} ;
+annotate service.Header with {
+    firstName @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    lastName @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    mobileNumberS @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    emailId @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    mobileNumber @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    departmentName @Common.FieldControl : #ReadOnly
+};
+annotate service.Header with {
+    location @Common.FieldControl : #ReadOnly
+};
+// annotate service.Header with @(
+//     Common.SideEffects #RefreshMfg : {
+//         $Type : 'Common.SideEffectsType',
+//         SourceEntities : [
+//             assetDetails
+//         ],
+//         TargetEntities : [
+//             assetDetails
+//         ],
+//     }
+// );
+
+// annotate service.AssetDetails with @(
+//     Common.SideEffects #RefreshMfg : {
+//         $Type : 'Common.SideEffectsType',
+//         SourceProperties : [x
+//             assetCategory_id
+//         ],
+//         TargetProperties : [
+//             manufacturer_id
+//         ]
+//     }
+// );
+

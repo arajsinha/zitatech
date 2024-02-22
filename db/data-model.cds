@@ -8,13 +8,15 @@ entity Header
     date : Date;
     firstName : String(100);
     lastName : String(100);
-    mobileNumber : Double;
+    mobileNumber : Integer64
+        @assert.range : [1000000000, 9999999999];
     emailId : String(100);
     departmentName : String(100);
     location : String(100);
     assetDetails : Composition of one AssetDetails on assetDetails.header = $self;
     requestPurpose : Association to one RequestPurpose;
     reqType : Association to one RequestType;
+    objectId : String(14);
 }
 
 entity AssetDetails
@@ -35,6 +37,14 @@ entity AssetDetails
     assetCategory : Association to one AssetCategory;
     OS : Association to one OS;
     manufacturer : Association to one Manufacturer;
+    assetSrNo : String(100);
+    osDetails : String(100);
+    hardwareTrack : String(100);
+    model : String(100);
+    scheduleDeliveryDate : Date;
+    mfgSpecUrl : String(100);
+    shippingAddress : String(100);
+    trackingNumber : String(100);
 }
 
 entity RequestPurpose : CodeList
@@ -54,7 +64,8 @@ entity OS : CodeList
 
 entity Manufacturer : CodeList
 {
-    key id : String(3);
+    key id : String(15);
+    key assetCategory : Association to one AssetCategory;
 }
 
 entity AssetCategory : CodeList

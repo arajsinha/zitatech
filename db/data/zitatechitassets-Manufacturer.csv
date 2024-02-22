@@ -1,4 +1,4 @@
-id;descr;name;
-del;For Products from Dell;Dell;
-hp;For products from HP;HP;
-len;For products from Lenovo;Lenovo;
+id;assetCategory_id;descr;name;
+del;lap;For Products from Dell;Dell;
+hp;lap;For products from HP;HP;
+len;lap;For products from Lenovo;Lenovo;

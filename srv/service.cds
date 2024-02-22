@@ -2,7 +2,10 @@ using zitatechitassets from '../db/data-model';
 
 service ITAssetRequestFormService {
     @odata.draft.enabled
-    entity Header         as projection on zitatechitassets.Header;
+    entity Header         as projection on zitatechitassets.Header {
+        *,
+        cast(mobileNumber as String) as mobileNumberS: String
+    };
     entity AssetDetails   as projection on zitatechitassets.AssetDetails;
     entity AssetCategory  as projection on zitatechitassets.AssetCategory;
     entity Manufacturer   as projection on zitatechitassets.Manufacturer;
