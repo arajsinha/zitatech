@@ -2,6 +2,18 @@ namespace zitatechitassets;
 
 using { sap.common.CodeList } from '@sap/cds/common';
 
+annotate Header with {
+    RequestStatus @title : 'Request Status';
+    
+};
+
+
+annotate AssetDetails with {
+    manufacturer @title : 'Manufacturer';
+    
+};
+
+
 entity Header
 {
     key ID : UUID;
@@ -17,6 +29,7 @@ entity Header
     requestPurpose : Association to one RequestPurpose;
     reqType : Association to one RequestType;
     objectId : String(14);
+    RequestStatus : Association to one RequestStatus;
 }
 
 entity AssetDetails
@@ -37,7 +50,7 @@ entity AssetDetails
     assetCategory : Association to one AssetCategory;
     OS : Association to one OS;
     manufacturer : Association to one Manufacturer;
-    assetSrNo : String(100);
+    assetSrNo : String(100) @title : 'Manufacturer Part no.';
     osDetails : String(100);
     hardwareTrack : String(100);
     model : String(100);
@@ -45,6 +58,7 @@ entity AssetDetails
     mfgSpecUrl : String(100);
     shippingAddress : String(100);
     trackingNumber : String(100);
+    productprice: Integer;
 }
 
 entity RequestPurpose : CodeList
@@ -57,6 +71,11 @@ entity RequestType : CodeList
     key id : String(3);
 }
 
+entity RequestStatus : CodeList
+{
+    key id : String(3);
+}
+
 entity OS : CodeList
 {
     key id : String(3);
@@ -64,8 +83,8 @@ entity OS : CodeList
 
 entity Manufacturer : CodeList
 {
-    key id : String(15);
-    key assetCategory : Association to one AssetCategory;
+    key id : String(5);
+    assetCategory : Association to one AssetCategory;
 }
 
 entity AssetCategory : CodeList

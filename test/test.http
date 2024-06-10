@@ -1,0 +1,18 @@
+PATCH http://localhost:4004/odata/v4/itasset-request-form/Header(ID=15edb68e-a525-4255-a431-fe8a6e533e93,IsActiveEntity=true)
+content-type: application/json
+
+{
+    "date":"1991-07-30",
+    "emailId":"test",
+    "RequestStatus_id": "new",
+    "assetDetails": {
+        "ram": 32
+    }
+}
+
+### approved
+POST http://localhost:4004/odata/v4/itasset-request-form/Header(ID=15edb68e-a525-4255-a431-fe8a6e533e93,IsActiveEntity=true)/ITAssetRequestFormService.approve
+content-type: application/json
+
+{
+}

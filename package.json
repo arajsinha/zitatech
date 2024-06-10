@@ -1,45 +1,61 @@
 {
-    "name": "zitatechitassets",
-    "version": "1.0.0",
-    "description": "A simple CAP project.",
-    "repository": "<Add your repository here>",
-    "license": "UNLICENSED",
-    "private": true,
-    "dependencies": {
-        "@sap-cloud-sdk/openapi": "^3.12.0",
-        "@sap-cloud-sdk/openapi-generator": "^3.12.0",
-        "@sap/cds": "^7",
-        "@sap/cds-hana": "^2",
-        "express": "^4"
-    },
-    "devDependencies": {
-        "@cap-js/sqlite": "^1",
-        "@sap/cds-dk": "^7",
-        "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
-        "@sap/ux-specification": "^1.120.4",
-        "@sapui5/ts-types": "^1.92.2",
-        "cds-plugin-ui5": "^0.6.13",
-        "eslint": "^7.32.0",
-        "rimraf": "^5.0.5",
-        "typescript": "^5.3.3"
-    },
-    "scripts": {
-        "start": "cds-serve",
-        "undeploy": "cf undeploy zitatechitassets --delete-services --delete-service-keys --delete-service-brokers",
-        "build": "rimraf resources mta_archives && mbt build --mtar archive",
-        "build:tsc": "tsc",
-        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
-        "watch-itassetsub": "cds watch --open zitatech.itassetreq.sub.itassetsub/index.html?sap-ui-xx-viewCache=false --livereload false"
-    },
-    "workspaces": [
-        "app/*"
-    ],
-    "cds": {
-        "requires": {
-            "db": "hana"
+  "name": "zitatechitassets",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "^1.12.10",
+    "@sap-cloud-sdk/openapi": "^3.12.0",
+    "@sap-cloud-sdk/openapi-generator": "^3.12.0",
+    "@sap/cds": "^7",
+    "@sap/cds-hana": "^2",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+    "@sap/ux-specification": "^1.120.4",
+    "@sapui5/ts-types": "^1.92.2",
+    "cds-plugin-ui5": "^0.6.13",
+    "eslint": "^7.32.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "undeploy": "cf undeploy zitatechitassets --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "build:tsc": "tsc",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-itassetsub": "cds watch --open zitatech.itassetreq.sub.itassetsub/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-testola": "cds watch --open testola/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "cds": {
+    "requires": {
+      "db": "hana",
+      "auth": "dummy",
+      "zitatech_metadata": {
+        "kind": "odata-v2",
+        "model": "srv/external/zitatech_metadata",
+        "csrf": true,
+        "credentials": {
+          "destination": "zitatech-srv",
+          "path": ""
         }
+      }
     },
-    "sapux": [
-        "app/itassetsub"
-    ]
+    "fiori": {
+      "bypass_draft": true
+    }
+  },
+  "sapux": [
+    "app/itassetsub",
+    "app/testola"
+  ]
 }

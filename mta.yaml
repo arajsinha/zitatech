@@ -1,4 +1,4 @@
-_schema-version: "3.1"
+_schema-version: "3.2"
 ID: zitatechitassets
 description: A simple CAP project.
 version: 1.0.0
@@ -9,6 +9,7 @@ modules:
   requires:
   - name: zitatechitassets-db
   - name: uaa_zitatechitassets
+  - name: zitatechitassets-destination-service
   provides:
   - name: srv-api
     properties:
@@ -51,7 +52,7 @@ modules:
           ServiceInstanceName: zitatechitassets-xsuaa-service
           ServiceKeyName: uaa_zitatechitassets-key
           sap.cloud.service: zitatech.itasset
-        existing_destinations_policy: ignore
+        existing_destinations_policy: update
   build-parameters:
     no-source: true
 - name: zitatechitassets-app-content
@@ -104,6 +105,8 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: ~{srv-api/srv-url}
+            sap.applicationdevelopment.actions.enabled: true
+            sap.build.usage: CAP
           existing_destinations_policy: update
       version: 1.0.0
     service: destination

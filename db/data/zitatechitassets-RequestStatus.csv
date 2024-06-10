@@ -1,0 +1,5 @@
+id;descr;name;
+new;New Request;New Request;
+inp;Approval In Process;Approval In Process;
+app;Approved;Approved;
+rej;Rejected;Rejected;
