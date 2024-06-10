@@ -22,6 +22,7 @@ annotate service.Header with @(UI.LineItem: [
     {
         $Type : 'UI.DataField',
         Value : requestPurpose_id,
+        Label: 'Request Purpose'
     },
 ]);
 
@@ -36,33 +37,8 @@ annotate service.Header with @(
             },
             {
                 $Type: 'UI.DataField',
-                Label: 'First Name',
-                Value: firstName,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Last Name',
-                Value: lastName,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Mobile Number',
-                Value: mobileNumber,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Email ID',
-                Value: emailId,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Department Name',
-                Value: departmentName,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Location',
-                Value: location,
+                Label: 'Supplier',
+                Value: supplier,
             },
             {
                 $Type: 'UI.DataField',
@@ -89,6 +65,12 @@ annotate service.Header with @(
             ID    : 'BasicAssetDetails',
             Target: '@UI.FieldGroup#BasicAssetDetails',
         },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : 'Technical Specifications',
+            ID : 'TechnicalSpecifications',
+            Target : '@UI.FieldGroup#TechnicalSpecifications',
+        },
     ]
 );
 
@@ -98,7 +80,7 @@ annotate service.Header with @(UI.FieldGroup #BasicAssetDetails: {
         {
             $Type: 'UI.DataField',
             Value: assetDetails.assetCategory_id,
-            Label: 'Asset Category',
+            Label: 'Product Type',
         },
         {
             $Type : 'UI.DataField',
@@ -121,49 +103,9 @@ annotate service.Header with @(UI.FieldGroup #BasicAssetDetails: {
         },
         {
             $Type: 'UI.DataField',
-            Value: assetDetails.ioPorts,
-            Label: 'No. of I/O Ports',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.hdd,
-            Label: 'HDD',
-        },
-        {
-            $Type: 'UI.DataField',
             Value: assetDetails.OS_id,
             Label: 'OS',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.location,
-            Label: 'Location',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.zipCode,
-            Label: 'Zip Code',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.contactNumber,
-            Label: 'Contact Number',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.pickUpType,
-            Label: 'Pick Up Type',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.comments,
-            Label: 'Comments',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: assetDetails.processor,
-            Label: 'Processor',
-        },
+        }
     ],
 });
 
@@ -385,6 +327,58 @@ annotate service.Header with @(
 annotate service.Header with {
     RequestStatus @Common.FieldControl : #ReadOnly
 };
+annotate service.Header with @(
+    UI.FieldGroup #TechnicalSpecifications : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : assetDetails.productprice,
+                Label : 'Product Price',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.mfgPartNum,
+                Label : 'Manufacturer Part Number',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : assetDetails.devFamilyName,
+                Label : 'Device Family Name',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.processor,
+                Label : 'Processor',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.gpu,
+                Label : 'GPU',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.macAddressNums,
+                Label : 'Number of MAC Addresses',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.wirelessMacAddressNums,
+                Label : 'No. of Wireless MAC Addresses',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.ioPorts,
+                Label : 'No. of I/O Ports',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.coo,
+                Label : 'Country of Origin',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.eol,
+                Label : 'End of Life',
+            },{
+                $Type : 'UI.DataField',
+                Value : assetDetails.mfgProdSpecs,
+                Label : 'Manufacturer Product Specifications',
+            },],
+    }
+);
 // annotate service.Header with @(
 //     Common.SideEffects #RefreshMfg : {
 //         $Type : 'Common.SideEffectsType',

@@ -25,6 +25,8 @@ entity Header
     emailId : String(100);
     departmentName : String(100);
     location : String(100);
+    supplier: String(100);
+    productType: String(100);
     assetDetails : Composition of one AssetDetails on assetDetails.header = $self;
     requestPurpose : Association to one RequestPurpose;
     reqType : Association to one RequestType;
@@ -57,8 +59,16 @@ entity AssetDetails
     scheduleDeliveryDate : Date;
     mfgSpecUrl : String(100);
     shippingAddress : String(100);
+    devFamilyName: String(100);     
     trackingNumber : String(100);
     productprice: Integer;
+    mfgPartNum: String(100);
+    gpu: String(100);
+    macAddressNums: Integer;
+    wirelessMacAddressNums: Integer;
+    coo: String(100);
+    eol: Date;
+    mfgProdSpecs: String(100);
 }
 
 entity RequestPurpose : CodeList
